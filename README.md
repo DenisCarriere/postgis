@@ -4,6 +4,53 @@ A collection of snippets and best practices for using PostGIS.
 
 ## Select
 
+Select feature that does not exists in database
+```sql
+SELECT location
+FROM kingston
+WHERE NOT EXISTS (
+    SELECT location
+    FROM geocoder
+    WHERE kingston.location = geocoder.location AND
+    geocoder.provider = 'Bing')
+```
+
+Make a line from two points
+```sql
+DELETE FROM lines;
+
+INSERT INTO lines (provider, location, address, geom, distance)
+SELECT p1.provider, p2.location, p1.address, ST_MakeLine(ST_Union(p1.geom),ST_Centroid(ST_Union(p2.geom))), ST_Length(ST_MakeLine(ST_Union(p1.geom),ST_Centroid(ST_Union(p2.geom))), True)
+FROM geocoder as p1
+LEFT JOIN kingston as p2
+ON p1.location = p2.location
+GROUP BY p1.provider, p2.location, p1.address
+```
+
+Select the postal code from a single point
+```sql
+select kingston.location, postal.fsa
+from kingston, postal
+WHERE ST_Contains(postal.geom, kingston.geom)
+```
+
+Select the greatest distance between multiple points
+```sql
+SELECT p1.provider, p1.name, SUM(ST_Distance(p1.geom, p2.geom, true)) as distance
+FROM location as p1
+LEFT JOIN location as p2
+ON p1.name = p2.name and p1.provider <> p2.provider
+GROUP BY p1.provider, p1.name
+ORDER BY distance
+```
+
+Fix issue when sequence is not working, skips next value
+```sql
+SELECT max(gid) FROM geocoder LIMIT 1;
+
+SELECT nextval('geocoder_template_gid_seq');
+```
+
 2D Point as Lat & Lng
 ```sql
 SELECT ST_AsText('POINT(0 0'::geography);
