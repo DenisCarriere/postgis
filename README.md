@@ -27,6 +27,47 @@ ON p1.location = p2.location
 GROUP BY p1.provider, p2.location, p1.address
 ```
 
+Copy a select to CSV document
+```sql
+COPY (
+
+SELECT line.address as address, line.location as location, ST_X(kingston.geom) as x, ST_Y(kingston.geom) as y, line.distance as distance
+FROM line
+LEFT JOIN kingston
+ON line.location = kingston.location
+WHERE provider = 'OSM' and distance > 200
+
+) to 'C:/tmp/Kingston Geocoding - OSM Errors 200m.csv' WITH CSV HEADER
+```
+
+Copy a selection which does not exists to CSV document
+```sql
+COPY (
+
+SELECT location, ST_X(kingston.geom) as x, ST_Y(kingston.geom) as y
+FROM kingston
+WHERE NOT EXISTS (
+    SELECT location
+    FROM geocoder
+    WHERE kingston.location = geocoder.location AND
+    geocoder.provider = 'MapQuest')
+
+) to 'C:/tmp/Kingston Geocoding - MapQuest Errors NOT FOUND.csv' WITH CSV HEADER
+```
+
+Copy a selection with a distance greater than 200m
+```sql
+COPY (
+
+SELECT line.address as address, line.location as location, ST_X(kingston.geom) as x, ST_Y(kingston.geom) as y, line.distance as distance
+FROM line
+LEFT JOIN kingston
+ON line.location = kingston.location
+WHERE provider = 'Google' and distance > 200
+
+) to 'C:/tmp/Kingston Geocoding - Google Errors 200m.csv' WITH CSV HEADER
+```
+
 Select the postal code from a single point
 ```sql
 select kingston.location, postal.fsa
