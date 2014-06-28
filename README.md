@@ -15,6 +15,15 @@ WHERE NOT EXISTS (
     geocoder.provider = 'Bing')
 ```
 
+Cross Join
+```sql
+SELECT count(*)
+FROM kingston as p1
+CROSS JOIN (SELECT provider FROM geocoder GROUP by provider) AS p2 
+```
+
+
+
 Make a line from two points
 ```sql
 DELETE FROM lines;
