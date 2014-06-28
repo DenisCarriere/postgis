@@ -4,22 +4,22 @@ A collection of snippets and best practices for using PostGIS.
 
 ## Select
 
-###2D Point as Lat & Lng
+2D Point as Lat & Lng
 ```sql
 SELECT ST_AsText('POINT(0 0'::geography);
 ```
 
-###3D Point with Elevation
+3D Point with Elevation
 ```sql
 SELECT ST_AsText('POINT(1 1 5)'::geography) AS pointz;
 ```
 
-###3D Point with Elevation & Measurement
+3D Point with Elevation & Measurement
 ```sql
 SELECT ST_AsText('POINT(1 1 5 10)'::geography) AS pointzm;
 ```
 
-### Calculate Distance in meters between two points
+Calculate Distance in meters between two points
 * Boolean True = Uses WGS84 Spheroid
 * Boolean False = Uses World Sphere, faster calculations, less accurate
 
@@ -30,14 +30,14 @@ FROM (SELECT
   'POINT(1 1)'::geography AS point2) AS foo;
 ```
 
-###Calculates the Distance between a Line to a Point
+Calculates the Distance between a Line to a Point
 ```sql
 SELECT ST_Distance(
     'LINESTRING(0 0, 5 5)'::geography,
     'POINT(3 3)'::geography);
 ```
 
-###Does this Polygon contain this point
+Does this Polygon contain this point
 ```sql
 SELECT point
 FROM (SELECT
@@ -46,7 +46,7 @@ FROM (SELECT
 WHERE ST_Contains(poly, point);
 ```
 
-###Is Point within this Polygon
+Is Point within this Polygon
 ```sql
 SELECT point
 FROM (SELECT
@@ -55,7 +55,7 @@ FROM (SELECT
 WHERE ST_Within(point, poly);
 ```
 
-###Is Point within a Radius of another Point
+Is Point within a Radius of another Point
 ```sql
 SELECT point
 FROM (SELECT
@@ -64,14 +64,14 @@ FROM (SELECT
 WHERE ST_DWithin(point, center, 3.0);
 ```
 
-###WGS84 Data to Nad83
+WGS84 Data to Nad83
 ```sql
 SELECT ST_Transform(point, 4269)
 FROM (SELECT
     'POINT(0 0)':geography AS point) AS Foo;
 ```
 
-###Distance between greater than 1000 meters
+Distance between greater than 1000 meters
 ```sql
 SELECT ST_Distance(point1, point2) as distance
 FROM (SELECT
@@ -80,23 +80,23 @@ FROM (SELECT
 WHERE ST_Distance(point1, point2) > 1000
 ```
 
-###Normalize Address
+Normalize Address
 ```sql
 SELECT * FROM  normalize_address('1552 Payette drive Ottawa ON');
 SELECT * FROM  normalize_address('K1E1S9');
 ```
 
-###Fuzzy Matching
+Fuzzy Matching
 ```sql
 SELECT soundex('Three'), soundex('Tree'), difference('Three', 'Tree');
 ```
 
-###Index using GIST
+Index using GIST
 ```sql
 CREATE INDEX kingston_location_index ON kingston USING GIST(location)
 ```
 
-###Search Postal Codes
+Search Postal Codes
 ```sql
 select kingston.location, postal.fsa
 from kingston, postal
