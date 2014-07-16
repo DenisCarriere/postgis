@@ -22,6 +22,15 @@ FROM kingston as p1
 CROSS JOIN (SELECT provider FROM geocoder GROUP by provider) AS p2 
 ```
 
+Remove Duplicate
+```sql
+DELETE FROM tablename
+WHERE id IN (SELECT id
+              FROM (SELECT id,
+                             row_number() over (partition BY column1, column2, column3 ORDER BY id) AS rnum
+                     FROM tablename) t
+              WHERE t.rnum > 1);
+```
 
 
 Make a line from two points
