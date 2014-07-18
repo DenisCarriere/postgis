@@ -1,0 +1,1 @@
+select * from ottawa where COALESCE(location, '') = '' 
