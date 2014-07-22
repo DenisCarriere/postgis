@@ -1,14 +1,14 @@
 ﻿/* Add location column to database */
-ALTER TABLE public.regina ADD COLUMN location character varying(256);
+ALTER TABLE public.saskatoon ADD COLUMN location character varying(256);
 
 /* Add the formatted location */
-update regina
-set location = "FULLADDRSS" || ', Regina Saskatchewan';
+update saskatoon
+set location = "Name";
 
 /* Remove Duplicates */
 DELETE
-FROM regina
+FROM saskatoon
 WHERE gid IN
 	(SELECT gid FROM 
-		(SELECT gid, row_number() OVER (PARTITION BY location) AS rnum FROM regina) as t
+		(SELECT gid, row_number() OVER (PARTITION BY location) AS rnum FROM saskatoon) as t
 	WHERE rnum > 1);

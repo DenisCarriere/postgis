@@ -1,3 +1,9 @@
-﻿SELECT count(1) geocoder
-WHERE NOT ST_Contains((SELECT geom FROM bbox WHERE city='ottawa'), geom)
-AND city = 'ottawa'
+﻿delete
+FROM geocoder
+WHERE city = 'saskatoon'
+and distance > 5000
+
+/*
+1160 Regina
+700 Saskatatoon
+*/

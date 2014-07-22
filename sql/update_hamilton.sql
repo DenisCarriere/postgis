@@ -3,7 +3,7 @@ ALTER TABLE public.hamilton ADD COLUMN location character varying(256);
 
 /* Add the formatted location */
 update hamilton
-set location = "STREET_NUM" || ' ' || "NAME" || ' ' || "SUFFIX" || ', Hamilton Ontario';
+set location = "STREET_NUM" || ' ' || "NAME" || ' ' || "SUFFIX" || ', ' || "DISTRICT" || ' Ontario'
 
 /* Remove 0 routes */
 delete 
