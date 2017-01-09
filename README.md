@@ -284,16 +284,17 @@ VACUUM ANALYZE;
 
 ## Projections
 
-* WGS84: 4326
-* NAD83: 4269
+- WGS84 => EPSG:4326
+- NAD83 => EPSG:4269
+- Web Mercator => EPSG:3857
 
 ## References
 
 * OpenGIS Consortium Standards
-* (PostGIS manual)[http://postgis.net/docs/manual-2.0/PostGIS_FAQ.html]
-* (Open Geospatial standards)[http://www.opengeospatial.org/standards/sfs]
+* [PostGIS manual](http://postgis.net/docs/manual-2.0/PostGIS_FAQ.html)
+* [Open Geospatial standards](http://www.opengeospatial.org/standards/sfs)
 * International Standards SQL 92 & OGC-SFS
-* (Great Circle Mapper)[http://gc.kls2.com/cgi-bin/gc?PATH=SEA-LHR]
+* [Great Circle Mapper](http://gc.kls2.com/cgi-bin/gc?PATH=SEA-LHR)
 
 ## Accronyms
 
